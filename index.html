@@ -1,0 +1,889 @@
+<!doctype html>
+<html>
+<head>
+	<title>Osafe</title>
+	
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1">
+	
+	<link rel="stylesheet" href="assets/css/ionicons.min.css">
+	<link rel="stylesheet" href="assets/css/main.css">
+	<!--<link rel="stylesheet" href="assets/css/clndr.css">-->
+	
+	<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+	<script src="cordova.js"></script>
+	<script src="assets/js/jquery-2.1.4.min.js"></script>
+	<script src="assets/js/jquery.easing-1.3.min.js"></script>
+	<script src="assets/js/yacal/jquery.yacal.min.js"></script>
+	<script src="assets/js/main.js"></script>
+	<script src="assets/js/functions.js"></script>
+	
+	<script src="assets/js/PushNotification.js"></script>
+	
+	
+	<script src="assets/js/apointment.js"></script>
+	<link rel="stylesheet" href="assets/js/yacal/jquery.yacal.css">
+	<!--<script src="assets/js/clndr.js"></script>
+	<script src="assets/js/moment-2.2.1.js"></script>
+	<script src="assets/js/underscore-min.js"></script>
+	<script src="assets/js/site.js"></script>-->
+
+	<audio id="audio" src="assets/sounds/Effect_Tick.ogg" >
+		
+	</audio>
+
+	<script>
+    function myDate() {
+        var a = new Date();
+        var days = new Array(7);
+        days[0] = "Sunday";
+        days[1] = "Monday";
+        days[2] = "Tuesday";
+        days[3] = "Wednesday";
+        days[4] = "Thursday";
+        days[5] = "Friday";
+        days[6] = "Saturday";
+        var r = days[a.getDay()];
+        document.getElementById("myId").innerHTML = r;
+    }
+	
+	function myDate1() {
+            var A = new Date();
+            var month = new Array();
+            month[0] = "January";
+            month[1] = "February";
+            month[2] = "March";
+            month[3] = "April";
+            month[4] = "May";
+            month[5] = "June";
+            month[6] = "July";
+            month[7] = "August";
+            month[8] = "September";
+            month[9] = "October";
+            month[10] = "November";
+            month[11] = "December";
+            var R = month[A.getMonth()];
+            document.getElementById("myId1").innerHTML = R;
+        }
+		
+		function display() { 
+		var dt= new Date();
+		var my_date= dt.getDate();
+	
+		var last_digit= my_date % 10;
+		var format;
+		if(last_digit==1) 
+		format="st";
+		else 
+		if(last_digit==2)
+		format="nd";
+		else
+		if(last_digit==3 && my_date !=13)
+		format="rd";
+		else
+		format="th";
+		my_date=my_date + format;
+		//////// End of identifying date format ///////
+		//alert(my_date); 
+		document.getElementById("myId2").innerHTML = my_date;
+		}
+	</script>
+
+	<script>
+		function increaseValue(item) {
+			console.log('from incr fun '+item);
+			var value = parseInt(document.getElementById('number'+item).value, 10);
+			value = isNaN(value) ? 0 : value;
+			value++;
+			document.getElementById('number'+item).value = value;
+			
+		}
+		
+		function decreaseValue(item) {
+			console.log('from dec fun '+item);
+			var value = parseInt(document.getElementById('number'+item).value, 10);
+			value = isNaN(value) ? 0 : value;
+			value < 1 ? value = 1 : '';
+			value--;
+			document.getElementById('number'+item).value = value;
+		}
+	</script>
+
+	<script>
+	var i =0;
+	function get_i(){return i;}
+	function increase_i (){i++;}
+	function decrease_i() {i--;}
+		$(function()
+		{
+			$(document).on('click', '.btn-add', function(e)
+			{
+				e.preventDefault();
+				var ii = get_i();
+				var tag = '#number'+ii;
+				var inc_dec_tag= "#"+ii;
+				console.warn('var inc_dec_tag= ii; '+inc_dec_tag);
+				increase_i();
+				var ii = get_i();
+				console.log(ii);
+				console.log(tag);
+				var controlForm = $('.controls form:first'),
+					currentEntry = $(this).parents('.entry:first'),
+					newEntry = $(currentEntry.clone()).prop('id','entry'+ii).appendTo(controlForm);
+					newEntry.find(tag).prop('id','number'+ii);
+					newEntry.find(inc_dec_tag).prop('id',''+ii);
+					newEntry.find('#number'+ii).prop('value','0');
+					newEntry.find('select').val('');					
+					controlForm.find('.entry:not(:last) .btn-add')
+					.removeClass('btn-add').addClass('btn-remove')
+					.removeClass('btn-success').addClass('btn-danger')
+					.html('<span class="glyphicon glyphicon-minus"><i style="line-height: 1;" class="icon ion-minus"></i></span>');
+					
+					var $entry = $('.entry').length;
+					if($entry>10){
+					$('.btn-success').attr('disabled','disabled')
+					}
+					
+			}).on('click', '.btn-remove', function(e)
+			{
+				var current_entry = '#entry'+get_i();
+				$(current_entry).remove();
+				decrease_i();
+				var ii = get_i();
+				var after_entry='#entry'+get_i();
+				var controlForm = $('.controls form:first');
+				controlForm.find('.entry:last .btn-remove')
+					.removeClass('btn-remove').addClass('btn-add')
+					.removeClass('btn-danger').addClass('btn-success')
+					.html('<span class="glyphicon glyphicon-plus"><i style="line-height: 1;" class="icon ion-plus-round"></i></span>');
+;
+				console.log(ii);
+				e.preventDefault();
+				return false;
+			});
+		});
+	</script>
+	
+	
+	
+<script>
+function getTotal()
+{
+
+var per_price = document.getElementById('products_1').value;
+
+
+var per_price_2 = document.getElementById('products_2').value;
+
+
+var per_price_3 = document.getElementById('products_3').value;
+
+
+var per_price_4 = document.getElementById('products_4').value;
+
+
+var per_price_5 = document.getElementById('products_5').value;
+
+
+//alert(per_price);
+
+var total = (+per_price)+(+per_price_2)+(+per_price_3)+(+per_price_4)+(+per_price_5);
+
+
+var discount_amt = document.getElementById('discount').value;
+
+document.getElementById('total').value = (total - discount_amt);
+
+}
+</script>
+
+
+
+
+
+	
+
+	<script>
+		$(document).ready( function() {
+	    var now = new Date();
+	    var tommorow =  new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
+	 
+	    var day = ("0" + tommorow.getDate()).slice(-2);
+	    var month = ("0" + (tommorow.getMonth() + 1)).slice(-2);
+
+	    var today = tommorow.getFullYear()+"-"+(month)+"-"+(day) ;
+
+
+	   $('#datePicker').val(today);
+	    
+		});	
+	</script>
+
+
+	<script>
+	 $(document).ready(function(){
+	 	$.ajax({
+	    url: 'http://sunday-tech.com/osafe/api/fetch_location.php',
+		method: 'get',
+		cache: false,
+		})
+		.done(function(response)
+		{
+				var json = $.parseJSON(response);
+					
+			    window.search_category= json[1].address;
+				var input = document.getElementById('getAddress');
+	    		input.value=window.search_category;
+				var html = '';
+				html += '<input value="' + json[i].address + '">' + json[i].address + '</input>';
+			 	
+				$('#getAddress').html(html);
+		})
+		.fail(function()
+		{
+			
+		});
+	 });
+	</script>
+
+	<script>
+	 $(document).ready(function(){
+	 	$.ajax({
+	 		url:'http://sunday-tech.com/osafe/api/product_category.php',
+	 		method:'post',
+	 		cache: false,
+	 		data: 
+	 		{
+
+	 		}
+	 	})
+	 	.done(function(response)
+	 	{
+	 		var json = $.parseJSON(response);
+	 		var input = document.getElementById('total');
+	 	})
+	 	
+	 })	
+	</script>
+	
+
+
+</head>
+<body onLoad="myDate();myDate1();display();appm_calendarGenerate(month,year);loadproduct() ;loadproduct2() ;loadevaluation();">
+
+	<!-- #splash -->
+	<div id="splash"></div>
+	<!-- end #splash -->
+
+	<!-- .tab-bar -->
+	<div class="tab-bar clearfix">
+		<a id="tab-1" class="tab-button col-4 active" onClick="pushPage('home'); appm_calendarGenerate(month,year); playMP3(); vibrate();"><i class="icon ion-calendar"></i> Appointment</a>
+		<a id="tab-2" class="tab-button col-4" onClick="pushPage('sale'); sale_checkPage(); playMP3(); vibrate();"><i class="icon ion-pricetags"></i> Sale</a>
+		<a id="tab-3" class="tab-button col-4" onClick="pushPage('profile'); playMP3(); vibrate();"><i class="icon ion-android-person"></i> Profile</a>
+	</div>
+	<!-- end .tab-bar -->
+
+
+	<!-- #home -->
+	<div id="home" class="page">
+			<div class="calender clnd">
+				 <div class="calender-right">
+					 <div class="clndr-top">	
+							<h3 id="myId"></h3>
+							<h3 id="myId1" style="display: inline-block;"></h3>	
+							<h3 id="myId2" style="display: inline-block; padding-left:5px;"></h3>				
+				
+					 </div>
+					 <div class="events1"> 
+							<h3>Events</h3>
+					 </div>
+					 <div class="plus">
+						  <img id="plus1" onClick="leave_login();leave_checkPage();playMP3(); vibrate();" src="assets/img/plus.png" alt=""/>
+						  <!--<img id="plus1" onClick="pushPage('checkin'); playMP3(); vibrate();" src="assets/img/plus.png" alt=""/>-->
+					 </div>
+				  </div>			  
+			 </div>		
+		<div class="content clearfix">
+	
+		</div>
+	</div>
+	<!-- end #home -->
+	
+	<!-- #my Appointment -->
+	<div id="myapoint" class="page">
+	<div class="toolbar"><a class="btn-back" onClick="popPage();appm_calendarGenerate();vibrate();playMP3();"><i class="icon ion-arrow-left-c"></i></a><i class="icon ion-calendar"></i> My Appointment</div>
+		<div class="content">
+			
+		</div>
+	</div>
+	<!-- end #my Appointment-->
+		
+	<!-- #my Appointment detail-->
+	<div id="myapointdetail" class="page">
+	<div class="toolbar"><a class="btn-back" onClick="popPage();vibrate();playMP3();"><i class="icon ion-arrow-left-c"></i></a><i class="icon ion-calendar"></i> Appointment Detail</div>
+		<div class="content">
+
+		</div>
+	</div>
+	<!-- end #my Appointment detail-->
+	
+	<!-- #checkin -->
+	<div id="checkin" class="page">
+		<div class="toolbar"><a class="btn-back" onClick="popPage();vibrate();playMP3();"><i class="icon ion-arrow-left-c"></i></a><i class="icon ion-ios-location"></i> Check In</div>
+		<div class="content clearfix">
+			<div class="mb-18" align="center" id="ci_locationStatus"><p></p></div>
+			<div class="mb-10" align="center"><img style="display:none;" id="ci_mapImg"  width="100%" height="" src=""/></div>
+			<div class="mb-10"><input placeholder="Latitude" name="latitude" id="ci_latitude" type="text" disabled/></div>
+			<div class="mb-10"><input placeholder="Longitude" name="longitude" id="ci_longitude" type="text" disabled/></div>
+			<!--<div class="mb-10"><input placeholder="Date/Time" name="timestamp" id="ci_timestamp" type="text" disabled/></div>-->
+			<div class="mb-10"><input placeholder="Visiting Company Name / Place" name="company" id="ci_company" type="text"/></div>
+			<div class="mb-10"><textarea data-role="header" style="resize:none;" placeholder="Type your description..." value="text" name="description" cols="30" rows="1" id="ci_description"></textarea></div>
+			<a class="button fit mb-10" onClick="ci_findLocation();"><i style="float:left;" class="icon ion-ios-location"></i> Location Check In</a>
+			<a class="button fit mb-10" style="background-color:#333232" onClick="ci_submit();"><i style="float:left;" class="icon ion-android-send"></i> Submit</a>
+		</div>
+	</div>
+	<!-- end #checkin -->
+	
+	
+	
+	<!-- #sale -->
+	<div id="sale" class="page">
+		<div class="toolbar"><a class="btn-back" onClick="popPage();vibrate();playMP3();"><i class="icon ion-arrow-left-c"></i></a><i class="icon ion-pricetags"></i> Sale</div>
+		<div class="content" >
+
+		</div>
+	</div>
+	<!-- end #sale -->
+	
+	<!-- #sale -->
+	<div id="sale_detail" class="page">
+		<div class="toolbar"><a class="btn-back" onClick="popPage();vibrate();playMP3();"><i class="icon ion-arrow-left-c"></i></a><i class="icon ion-pricetags"></i> Sale Details</div>
+		<div class="content" >
+
+		</div>
+	</div>
+	<!-- end #sale -->
+
+	<!-- #customer detail -->
+	<div id="customer_detail" class="page">
+		<div class="toolbar"><a class="btn-back" onClick="popPage();vibrate();playMP3();"><i class="icon ion-arrow-left-c"></i></a><i class="icon ion-pricetags"></i> Customer Details</div>
+		<div class="content" >
+
+		</div>
+	</div>
+	<!-- end #customer detail -->
+
+
+	<!-- #sale -->
+	<div id="new_sale" class="page">
+		<div class="toolbar"><a class="btn-back" onClick="popPage();vibrate();playMP3();"><i class="icon ion-arrow-left-c"></i></a><i class="icon ion-pricetags"></i> New Sale</div>
+		<div class="content" >
+
+			<div class="col-xs-6 mb-18"><div class="left-inner-addon"><div class="bio2"><i class="icon ion-android-person"></i></div>
+			<input id="customer_name" placeholder="Customer Name"></div></div>
+			
+			<div class="controls"> 
+				<form style="width:100%" role="form" autocomplete="off">
+						
+				<div id="entry0" class="entry input-group col-xs-3 mb-10" style="width:100%" style="display: inline-block;"> 
+							
+					<div class="item clearfix">
+							
+						<!------ LINE 1  ------>	
+							
+						<div class="item-title">
+							<div class="col-xs-6"><div class="left-inner-addon"><div style="float:left" class="bio2"><i class=""></i></div>
+							<select style="" class="form-control" name="products_1" id="products_1" onChange="getTotal()" type="text" value=""/></select>
+							</div></div>
+						</div>
+						
+						<div class="item-title">
+							<div class="col-xs-6"><div class="left-inner-addon"><div style="float:left" class="bio2"><i class=""></i></div>
+							<select style="" class="form-control" name="color_1" id="color_1"  type="text" value=""/></select>
+							</div></div>
+						</div>
+								
+						
+						
+						
+					
+						<!------ LINE 2  ------>
+						
+						<div class="item-title">
+							<div class="col-xs-6"><div class="left-inner-addon"><div style="float:left" class="bio2"><i class=""></i></div>
+							<select style="" class="form-control" name="products_2" id="products_2" onChange="getTotal()" type="text" value=""/></select>
+							</div></div>
+						</div>
+						<div class="item-title">
+							<div class="col-xs-6"><div class="left-inner-addon"><div style="float:left" class="bio2"><i class=""></i></div>
+							<select style="" class="form-control" name="color_2" id="color_2"  type="text" value=""/></select>
+							</div></div>
+						</div>	
+						
+						
+						<!------ LINE 3  ------>
+						
+						<div class="item-title">
+							<div class="col-xs-6"><div class="left-inner-addon"><div style="float:left" class="bio2"><i class=""></i></div>
+							<select style="" class="form-control" name="products_3" id="products_3" onChange="getTotal()" type="text" value=""/></select>
+							</div></div>
+						</div>
+						<div class="item-title">
+							<div class="col-xs-6"><div class="left-inner-addon"><div style="float:left" class="bio2"><i class=""></i></div>
+							<select style="" class="form-control" name="color_3" id="color_3"  type="text" value=""/></select>
+							</div></div>
+						</div>		
+						
+						
+						<!------ LINE 4  ------>
+						
+						<div class="item-title">
+							<div class="col-xs-6"><div class="left-inner-addon"><div style="float:left" class="bio2"><i class=""></i></div>
+							<select style="" class="form-control" name="products_4" id="products_4" onChange="getTotal()" type="text" value=""/></select>
+							</div></div>
+						</div>
+						<div class="item-title">
+							<div class="col-xs-6"><div class="left-inner-addon"><div style="float:left" class="bio2"><i class=""></i></div>
+							<select style="" class="form-control" name="color_4" id="color_4"  type="text" value=""/></select>
+							</div></div>
+						</div>		
+						
+						
+		                <!------ LINE 5  ------>	
+		
+						<div class="item-title">
+							<div class="col-xs-6"><div class="left-inner-addon"><div style="float:left" class="bio2"><i class=""></i></div>
+							<select style="" class="form-control" name="products_5" id="products_5" onChange="getTotal()" type="text" value=""/></select>
+							</div></div>
+						</div>
+						<div class="item-title">
+							<div class="col-xs-6"><div class="left-inner-addon"><div style="float:left" class="bio2"><i class=""></i></div>
+							<select style="" class="form-control" name="color_5" id="color_5"  type="text" value=""/></select>
+							</div></div>
+						</div>	
+						
+						
+						
+						
+					</div>
+						
+				</form>
+			</div>
+		</div>
+		
+		<div class="col-xs-6 mb-18" ><div class="left-inner-addon"><div class="bio2"><i class="icon ion-android-call"></i></div>
+		<input id="contact" placeholder="Contact Number" type="tel"></div></div>
+
+		<div class="col-xs-6 mb-18" ><div class="left-inner-addon"><div class="bio2"><i class="icon ion-android-calendar"></i></div>
+		<input id="datePicker" placeholder="Delivery Date" type="date"></div></div>
+		
+		<div class="col-xs-6 mb-18" ><div class="left-inner-addon"><div class="bio2"><i class="icon ion-pricetags"></i></div>
+		<input id="discount" placeholder="Discount" onChange="getTotal()" value=""></div></div>
+		
+		<div class="col-xs-6 mb-18" ><div class="left-inner-addon"><div class="bio2"><i class="icon ion-social-usd"></i></div>
+		<input id="total" placeholder="Total" value="" ></div></div>
+
+		<div class="col-xs-6 mb-18"><div class="left-inner-addon"><div class="bio2"><i class="icon ion-ios-location"></i></div>
+		<input id="getAddress" placeholder="Delivery Address" name="address" value=''></div></div>
+
+
+		<div class="col-xs-6 mb-10" ><div class="left-inner-addon"><div class="bio2"><i class="icon ion-chatbubble-working"></i></div>
+		<textarea style="padding-left:35px; padding-top:10px" id="remark" placeholder="Remark" ></textarea></div></div>
+		
+		<a class="button col-2" onClick="sale_register();playMP3();vibrate();"><i style="float:left;" class="icon ion-checkmark-circled"></i> Done</a>
+		
+		<a class="button col-5" style="background:#28272b;" id="add_form_field" onClick="clearSalesInfo();playMP3(); vibrate();loadproduct();"><i style="float:left" class="icon ion-plus-circled"></i> Add Next</a>
+
+		</div>
+	</div>
+	<!-- end #sale -->
+	
+	
+	
+	<!-- #leave -->
+	<div id="leave" class="page">
+		<div class="toolbar"><a class="btn-back" onClick="popPage();vibrate();playMP3();"><i class="icon ion-arrow-left-c"></i></a><i class="icon ion-ios-paper"></i> Leave Request<a class="btn-forward" onClick="pushPage('leave-request');playMP3(); vibrate();"><i style="font-size:28px; line-height:1.2;" class="icon ion-compose"></i></a></div>
+		<div class="content" >
+
+		</div>
+	</div>
+	<!-- end #leave -->
+	
+	<!-- #leave detail -->
+	<div id="leave-detail" class="page">
+		<div class="toolbar"><a class="btn-back" onClick="popPage();vibrate();playMP3();"><i class="icon ion-arrow-left-c"></i></a><i class="icon ion-ios-paper"></i> Request Detail</div>
+		<div class="content" >
+		
+		</div>
+	</div>
+	<!-- end #leave detail-->
+	
+	<!-- #leave request -->
+	<div id="leave-request" class="page">
+		<div class="toolbar"><a class="btn-back" onClick="popPage();leave_checkPage();vibrate();playMP3();"><i class="icon ion-arrow-left-c"></i></a><i class="icon ion-ios-paper"></i> New Request</div>
+		<div class="content" >
+
+		<div class="item clearfix">
+				<div class="item-title"><b>From:</b></div>
+				<div class="item-thum"><div class="col-xs-6" ><div class="left-inner-addon"><div class="bio2"><i class="icon ion-android-calendar"></i></div>
+				<input id="from_date" onFocus="(this.type='date')" placeholder="Date"></div></div></div>
+		</div>
+		<div class="item clearfix">
+				<div class="item-title"><b>To:</b></div>
+				<div class="item-thum"><div class="col-xs-6" ><div class="left-inner-addon"><div class="bio2"><i class="icon ion-android-calendar"></i></div>
+				<input id="to_date" onFocus="(this.type='date')" placeholder="Date"></div></div></div>
+		</div>
+		
+		<div class="col-xs-6" ><div class="left-inner-addon"><div class="bio2"><i class="icon ion-chatbubble-working"></i></div>
+		<textarea style="padding-left:35px; padding-top:10px" id="note" placeholder="Note" ></textarea></div></div>
+		
+		<a class="button fit" onClick="leave_register();playMP3(); vibrate();"><i style="float:left;" class="icon ion-android-send"></i> Send</a>
+		
+		</div>
+		
+	</div>
+	<!-- end #leave request-->
+	
+
+
+	<!-- #profile -->
+	<div id="profile" class="page">
+		<div class="toolbar"><i class="icon ion-android-person"></i> Profile</div>
+		<div class="content clearfix">
+		
+			<div class="mb-18">You are not logged in.</div>
+			<a class="button fit mb-18" onClick="pushPage('login', RTL);playMP3(); vibrate();"><i style="float:left;" class="icon ion-log-in"></i> Login</a>
+			<!--<a class="button fit" style="background-color:#333232" onClick="pushPage('register', RTL);playMP3(); vibrate();"><i style="float:left;" class="icon ion-person-add"></i> Register</a>-->
+
+		</div>
+	</div>
+	<!-- end #profile -->
+	
+	
+	<!-- #login -->
+	<div id="login" class="page">
+		<div class="toolbar"><a class="btn-back" onClick="popPage();vibrate();playMP3();"><i class="icon ion-arrow-left-c"></i></a><i class="icon ion-log-in"></i> Login</div>
+		<div class="content form"><br><br>
+			<!--<p align="center"><img src="assets/img/logo.png"></p>-->
+			<div class="col-xs-6" ><div class="left-inner-addon"><div class="bio2"><i class="icon ion-android-person"></i></div>
+			<input id="username" placeholder="Username / Email" value="nabila"></div></div>
+			<div class="col-xs-6" ><div class="left-inner-addon"><div class="bio2"><i class="icon ion-locked"></i></div>
+			<input id="password" placeholder="Password" type="password" value="123456"></div></div>
+			<div class="red mb-18" align="center"><a onClick="pushPage('retrieve_password', LTR); playMP3(); vibrate();"> Forgot Password</a></div>
+			<button class="fit" onClick="onLogin();"><i style="float:left;" class="icon ion-log-in"></i> Login</button>
+			<!--<button class="fit" style="background-color:#333232" onClick="pushPage('register', LTR);playMP3(); vibrate();"><i style="float:left;" class="icon ion-person-add"></i> Register</button>-->
+		</div>
+	</div>
+	<!-- end #login -->
+	
+	
+	<!-- #retrieve_password -->
+	<div id="retrieve_password" class="page">
+		<div class="toolbar"><a class="btn-back" onClick="popPage();vibrate();playMP3();"><i class="icon ion-arrow-left-c"></i></a><i class="icon ion-locked"></i> Retrieve Password</div>
+		<div class="content form">
+			<!--<p align="center"><img src="assets/img/logo.png"></p>-->
+			<div class="mb-18">Please key in your username in order to retrieve your password.</div>
+			<div class="col-xs-6" ><div class="left-inner-addon"><div class="bio2"><i class="icon ion-android-person"></i></div>
+			<input id="username" placeholder="Username"></div></div>
+			<button class="fit" onClick="password_retrieve(); playMP3();"><i style="float:left" class="icon ion-compose"></i> Retrieve My Password</button>
+			
+			
+		</div>
+	</div>
+	<!-- end #retrieve_password -->
+	
+	
+	<!-- #change_password -->
+	<div id="change_password" class="page">
+		<div class="toolbar"><a class="btn-back" onClick="popPage();playMP3();"><i class="icon ion-arrow-left-c"></i></a><i class="icon ion-locked"></i> Change Password</div>
+		<div class="content form">
+			<div class="col-xs-6" ><div class="left-inner-addon"><div class="bio2"><i class="icon ion-locked"></i></div>
+		    <input id="password-old" placeholder="Old password" type="password"></div></div>
+			
+		    <div class="col-xs-6" ><div class="left-inner-addon"><div class="bio2"><i class="icon ion-locked"></i></div>
+		    <input id="password" placeholder="New password" type="password"></div></div>
+			
+		    <div class="col-xs-6" ><div class="left-inner-addon"><div class="bio2"><i class="icon ion-locked"></i></div>
+		    <input id="password2" placeholder="Confirm password" type="password"></div></div>
+			
+		    <button class="button fit" onClick="password_change();playMP3();vibrate();"><i style="float:left" class="icon ion-compose"></i> Change Password</button>
+		</div>
+	</div>
+	<!-- end #change_password -->
+	
+	
+	<!-- #register -->
+	<div id="register" class="page" style=" padding-bottom: 5px;">
+		<div class="toolbar"><a class="btn-back" onClick="popPage();vibrate();playMP3();"><i class="icon ion-arrow-left-c"></i></a><i class="icon ion-ios-personadd"></i> Registration</div>
+		<div class="content form">
+		    <div class="col-xs-6" ><div class="left-inner-addon"><div class="bio2"><i class="icon ion-android-person"></i></div>
+			<input id="full-name" autocapitalize="on" placeholder="Full Name"></div></div>
+			
+			<div class="col-xs-6" ><div class="left-inner-addon"><div class="bio2"><i class="icon ion-female"></i></div>
+			<select id="gender" style="padding-left: 25px;">
+				<option value="Male" selected>Male</option>
+				<option value="Female">Female</option>
+			</select></div></div>
+			
+			<div class="col-xs-6" ><div class="left-inner-addon"><div class="bio2"><i class="icon ion-android-calendar"></i></div>
+			<input id="dob" onFocus="(this.type='date')" placeholder="Date of Birth"></div></div>
+			
+			<div class="col-xs-6" ><div class="left-inner-addon"><div class="bio2"><i class="icon ion-android-call"></i></div>
+			<input id="mobile" placeholder="Mobile Number" type="tel"></div></div>
+			
+			<div class="col-xs-6" ><div class="left-inner-addon"><div class="bio2"><i class="icon ion-email"></i></div>
+			<input id="email" placeholder="Email address" type="email"></div></div>
+			
+			<div class="col-xs-6" ><div class="left-inner-addon"><div class="bio2"><i class="icon ion-android-person"></i></div>
+			<input id="user-name"  placeholder="User name"></div></div>
+			
+			<div class="col-xs-6" ><div class="left-inner-addon"><div class="bio2"><i class="icon ion-locked"></i></div>
+			<input id="password" placeholder="Choose a password" type="password"></div></div>
+			
+			<div class="col-xs-6" ><div class="left-inner-addon"><div class="bio2"><i class="icon ion-locked"></i></div>
+			<input id="password2" placeholder="Confirm password" type="password"></div></div>
+			
+			<button class="fit" style="margin-bottom:20%" onClick="onRegister();playMP3();vibrate();"><i style="float:left" class="icon ion-compose"></i> Register</button>
+		</div>
+	</div>
+	<!-- end #register -->
+	
+	
+	<!-- #edit_profile -->
+	<div id="edit_profile" class="page">
+		<div class="toolbar"><a class="btn-back" onClick="popPage();playMP3();vibrate();"><i class="icon ion-arrow-left-c"></i></a><i class="icon ion-ios-person"></i> Edit Profile </div>
+		<div class="content form">
+		
+		<div class="col-xs-6" ><div class="left-inner-addon"><div class="bio2"><i class="icon ion-android-call"></i></div>
+		<input id="mobile" placeholder="Mobile Number e.g. 60171234567" type="tel"></div></div>
+		
+		<div class="col-xs-6" ><div class="left-inner-addon"><div class="bio2"><i class="icon ion-email"></i></div>
+		<input id="email" placeholder="Email Address" type="email"></div></div>
+		
+		 <button class="fit" onClick="profile_update();playMP3();vibrate();"><i style="float:left" class="icon ion-compose"></i> Edit</button>
+		</div>
+	</div>
+	<!-- end #edit_profile -->
+
+
+	<!-- #meeting evaluation -->
+	<div id="meeting_evaluation" class="page">
+		<div class="toolbar"><a class="btn-back" onClick="popPage();playMP3();vibrate();"><i class="icon ion-arrow-left-c"></i></a><i class="icon ion-ios-person"></i> Meeting Evaluation</div>
+		<div class="content clearfix">
+			<div>
+				<div class="title"> Status:</div>
+	 			<div class="item-title">
+					<div class="col-xs-6"><div class="left-inner-addon"><div style="float:left" class="bio2"><i class="icon ion-ios-box"></i></div>
+					<select style="padding-left:25px;" class="form-control" name="Metting Evaluation" id="eva_status" type="text"/></select>
+					</div></div>
+				</div>
+			</div>
+			<div>
+				<div class="title">Actual Pax: </div>
+				<input type="number" id="eva_pax" name="actual_pax" autocapitalize="on" placeholder="Actual Pax Number"/>
+			</div>
+
+			<div style="padding-top: 13px">
+			<div class="col-xs-6 mb-10" ><div class="left-inner-addon"><div class="bio2"><i class="icon ion-chatbubble-working"></i></div>
+				<textarea style="padding-left:35px; padding-top:10px" id="eva_remark" placeholder="Remark" ></textarea></div></div></div>
+
+			<a class="button col-2" onClick="evaluation_register();playMP3();vibrate();"><i style="float:left;" class="icon ion-checkmark-circled"></i> Submit </a>		
+		</div>	
+	</div>
+	<!-- end #evaluation -->
+
+	<!-- Update Order -->
+	<div id="edit_customer" class="page">
+	<div class="toolbar"><a class="btn-back" onClick="popPage();playMP3();vibrate();"><i class="icon ion-arrow-left-c"></i></a><i class="icon ion-ios-person"></i> Update Customer Details </div>
+		<div class="content clearfix">
+			<div class="item clearfix">
+				<div class="item-title"><b>Name:</b></div>
+				<div class="item-thum"><input id="name" placeholder="Name" ></div>
+			</div>
+			<div class="item clearfix">
+				<div class="item-title"><b>Status:</b></div>
+				<div class="item-thum"><input id="status" placeholder="Status" ></div>	
+			</div>
+			<div class="item clearfix">
+				<div class="item-title"><b>Contact No:</b></div>
+				<div class="item-thum"><input id="contact" placeholder="Contact Number" ></div>	
+			</div>
+			<div class="item clearfix">
+				<div class="item-title"><b>Product:</b></div>
+				<div class="item-thum"><input id="product" placeholder="Product" ></div>	
+			</div>
+			<div class="item clearfix">
+				<div class="item-title"><b>Discount:</b></div>
+				<div class="item-thum"><input id="discount" placeholder="Discount" ></div>	
+			</div>
+			<div class="item clearfix">
+				<div class="item-title"><b>Total:</b></div>
+				<div class="item-thum"><input id="total" placeholder="Total" ></div>	
+			</div>
+			<div class="item clearfix">
+				<div class="item-title"><b>Payment Method:</b></div>
+				<div class="item-thum"><input id="payment" placeholder="Payment Method" ></div>	
+			</div>
+			<div class="item clearfix">
+				<div class="item-title"><b>First Payment:</b></div>
+				<div class="item-thum"><input id="first" placeholder="First Payment" ></div>	
+			</div>
+			<div class="item clearfix">
+				<div class="item-title"><b>Pending Payment:</b></div>
+				<div class="item-thum"><input id="pending" placeholder="Pending Payment" ></div>	
+			</div>
+			<div class="item clearfix">
+				<div class="item-title"><b>Warranty:</b></div>
+				<div class="item-thum"><input id="warranty" placeholder="Warranty" ></div>	
+			</div>
+			<div class="item clearfix">
+				<div class="item-title"><b>Remarks:</b></div>
+				<div class="item-thum"><input id="remarks" placeholder="Remarks" ></div>	
+			</div>
+
+			 <button class="fit" onClick="edit_customer_details(); playMP3();vibrate();"><i style="float:left" class="icon ion-compose"></i> Edit</button>
+		</div>
+	</div>
+	
+	
+<script>
+
+	function sale_register(){
+	
+	var c_name = document.getElementById("customer_name").value;
+	var product_1 = document.getElementById("products_1").value;
+	var product_2 = document.getElementById("products_2").value;
+	var product_3 = document.getElementById("products_3").value;
+	var product_4 = document.getElementById("products_4").value;
+	var product_5 = document.getElementById("products_5").value;
+
+	var contact = document.getElementById("contact").value;
+	var discount = document.getElementById("discount").value;
+	var total = document.getElementById("total").value;
+	var remark = document.getElementById("remark").value;
+	var delevery_add = document.getElementById("getAddress").value;
+	var delevery_date = document.getElementById("datePicker").value;
+	
+	c_name = encodeURI(c_name);
+	product_1 = encodeURI(product_1);
+	product_2 = encodeURI(product_2);
+	product_3 = encodeURI(product_3);
+	product_4 = encodeURI(product_4);
+	product_5 = encodeURI(product_5);
+
+
+	
+	
+	contact = encodeURI(contact);
+	discount = encodeURI(discount);
+	total = encodeURI(total);
+	remark = encodeURI(remark);
+	delevery_add = encodeURI(delevery_add);
+	delevery_date = encodeURI(delevery_date);
+	
+	
+	
+	if(delevery_add == "")
+	{
+		alert("Please enter delivery address.");
+		
+		return false;
+	}
+
+	if(delevery_date == "")
+	{
+		alert("Please enter delivery date.");
+		return false;
+	}
+
+	if(c_name == "")
+	{
+		alert("Please enter customer name.");
+		return false;
+	}
+	
+	if(product_1 == "")
+	{
+		alert("Please select at least one product");
+		return false;
+	}
+	
+	alert("d");
+	
+	if(contact == "")
+	{
+		alert("Please enter contact number");
+		return false;
+	}
+	
+	if(remark == "")
+	{
+		alert("Please enter remark");
+		return false;
+	}
+	
+	
+	$('#new_sale').addClass('loading');
+	$('#new_sale .content').hide();
+	$.ajax(
+	{
+		url: 'http://sunday-tech.com/osafe/api/sale_register.php',
+		method: 'post',
+		cache: false,
+		data:
+		{
+			sales: uid,
+			appoinment_id: window.appoinment_id,
+			name: c_name,
+			contact: contact,
+		    
+			
+			discount: discount,
+			total: total,
+			remarks: remark,
+			deliv_date: delevery_date,
+			adres:delevery_add
+		}
+	})
+	.done(function(response)
+	{
+		if($.trim(response) == '0')
+		{
+			$('#new_sale').removeClass('loading');
+			$('#new_sale .content').show();
+			alert("Submitted successfully");
+			
+			$('#customer_name').val(null);
+			$('#products_1').val(null);
+			
+			$('#contact').val(null);
+			$('#discount').val(null);
+			$('#total').val(null);
+			$('#remark').val(null);
+			$('#getAddress').val(null);
+			$('#datePicker').val(null);
+			
+			popPage();
+		}
+		else
+		{
+			alert("Failed, please try again later");
+			$('#new_sale').removeClass('loading');
+			$('#new_sale .content').show();
+		}
+	})
+	.fail(function(){
+		//navigator.notification.alert('Wifi connection required.\nConnect to Wi-Fi network and try again.', null, 'No internet connection');
+		alert("Wifi connection required.\nConnect to Wi-Fi network and try again.");
+		$('#new_sale').removeClass('loading');
+		$('#new_sale .content').show();
+	});
+}
+	</script>
+	
+	<!-- End of Update order -- >
+	
+	
+	
+</body>
+</html>

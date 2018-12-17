@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8"><title></title><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.min.css" rel="stylesheet">
+<link href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,400,600" rel="stylesheet">
+<link href="css/font-awesome.css" rel="stylesheet"><link href="css/style.css" rel="stylesheet">
+<link href="css/pages/plans.css" rel="stylesheet">
+<script src="js/jquery-1.7.2.min.js"></script>
+<script src="js/bootstrap.js"></script>
+<script src="js/typeahead.js"></script>
+<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements --><!--[if lt IE 9]>
+
+	  
+	  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+	<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<style>
+h1{
+font-size: 20px;
+color: #111;
+}
+.content{
+	width: 80%;
+	margin: 0 auto;
+	margin-top: 50px;
+}
+
+.typeahead-devs, .tt-hint {
+ 	border: 2px solid #CCCCCC;
+    border-radius: 8px 8px 8px 8px;
+    font-size: 24px;
+    height: 45px;
+    line-height: 30px;
+    outline: medium none;
+    padding: 8px 12px;
+    width: 400px;
+}
+
+.tt-dropdown-menu {
+  width: 400px;
+  margin-top: 5px;
+  padding: 8px 12px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 8px 8px 8px 8px;
+  font-size: 18px;
+  color: #111;
+  background-color: #F1F1F1;
+}
+
+</style>
+<script>
+$(document).ready(function() {
+$('input.typeahead-devs').typeahead({
+  name: 'accounts',
+  local: ['Sunday', 'Monday', 'Tuesday','Wednesday','Thursday','Friday','Saturday']
+});
+})
+</script>
+</head><body>
+<div class="content">
+
+<h1>Select data from Array</h1>
+<form method="POST" action="#">
+	<input type="text" name="accounts" size="20" class="typeahead-devs" placeholder="Please Enter Day Name">
+</form>
+</div> 
+<div class="navbar navbar-fixed-top">
+	
+	<div class="navbar-inner">
+		
+		<div class="container">
+			
+			<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</a>
+			
+			<a class="brand" href="index.php">
+				Osafe Fire Inspection Sdn. Bhd.		
+			</a>		
+			
+				
+	
+		</div> <!-- /container -->
+		
+	</div> <!-- /navbar-inner -->
+	
+</div></body></html>
